@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Issues Tracker</title>
+    <link
+      rel="shortcut icon"
+      href="assets/github-logo.png"
+      type="image/x-icon"
+    />
+    <!-- style -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- tailwind & daisyUI-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- font awesome library  -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- font for this page  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-[#F8FAFC]">
+    <!-- sign in and sign up -->
+    <section
+      class="max-w-[520px] min-h-screen mx-auto flex flex-col justify-center items-center"
+    >
+      <div class="shadow-md rounded-2xl p-8 bg-white w-full">
+        <!-- top -->
+        <div class="flex flex-col justify-center items-center">
+          <img
+            class="w-[100px] mb-6"
+            src="assets/github-logo.png"
+            alt="github-logo"
+          />
+          <h1 class="mb-1 font-semibold text-[24px]">GitHub Issues Tracker</h1>
+          <p class="text-[#64748B]">Sign in to manage your issues</p>
+        </div>
+        <!-- middle -->
+        <div class="w-full">
+          <div class="border-base-300 w-full">
+            <label for="userName" class="label text-[#1F2937] mb-2"
+              >Username</label
+            >
+            <input
+              id="userName"
+              type="text"
+              class="input w-full mb-4"
+              placeholder="Enter Username"
+            />
+
+            <label for="password" class="label text-[#1F2937] mb-2"
+              >Password</label
+            >
+            <input
+              type="password"
+              class="input w-full"
+              placeholder="Enter Password"
+            />
+
+            <button class="btn btn-primary mt-4 w-full rounded-md text-white">
+              Sign In
+            </button>
+          </div>
+        </div>
+        <!-- last -->
+        <div class="w-full mt-6">
+          <div
+            class="flex justify-center items-center flex-row w-full gap-2 font-semibold"
+          >
+            <hr class="border-gray-300 w-full" />
+            OR
+            <hr class="border-gray-300 w-full" />
+          </div>
+          <div class="flex flex-col justify-center items-center mt-6">
+            <h2>Demo Credentials:</h2>
+            <div
+              class="bg-[#F8FAFC] py-6 flex flex-col justify-center items-center rounded-xl mt-2 w-full"
+            >
+              <p>
+                <span class="text-[#1F2937] font-bold">Username</span>: admin
+              </p>
+              <p>
+                <span class="text-[#1F2937] font-bold">Password</span>: admin123
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="script/script.js"></script>
+  </body>
+</html>
