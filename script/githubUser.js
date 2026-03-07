@@ -367,6 +367,7 @@ const searchIssue = () => {
       loadAllIssues();
       document.getElementById("removeAlert").classList.add("hidden");
       toggle("all");
+      openAndClosed("all");
       return;
     }
   });
