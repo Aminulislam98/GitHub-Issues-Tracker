@@ -12,6 +12,12 @@ const openAndClosed = (id) => {
     document.getElementById("closedStatus").classList.remove("hidden");
   }
 };
+// make the search input empty after search finished
+const emptyInput = () => {
+  const searchInput = document.getElementById("search");
+  searchInput.value = "";
+};
+
 // snipper
 const hideSpinnerOnly = () => {
   document.getElementById("snipper").classList.add("hidden");
@@ -213,18 +219,22 @@ const toggle = (pass) => {
     openButton.classList.remove("btn-primary");
     closedButton.classList.remove("btn-primary");
     allButton.classList.add("btn", "btn-primary");
+    emptyInput();
   } else if (pass === "open") {
     allButton.classList.remove("btn-primary");
     closedButton.classList.remove("btn-primary");
     openButton.classList.add("btn", "btn-primary");
+    emptyInput();
   } else if (pass === "closed") {
     openButton.classList.remove("btn-primary");
     allButton.classList.remove("btn-primary");
     closedButton.classList.add("btn", "btn-primary");
+    emptyInput();
   } else if (pass === "search") {
     openButton.classList.remove("btn-primary");
     allButton.classList.remove("btn-primary");
     closedButton.classList.remove("btn-primary");
+    emptyInput();
   }
 };
 // popUp modal when clicked in card
@@ -355,6 +365,7 @@ const searchIssue = () => {
     let search = searchInput.value.trim().toUpperCase();
     if (search) {
       loadSearchData(search);
+      toggle("search");
     } else {
       loadAllIssues();
       document.getElementById("removeAlert").classList.add("hidden");
@@ -393,13 +404,16 @@ const loadSearchData = async (searchWord) => {
 const closed = () => {
   document.getElementById("removeAlert").classList.add("hidden");
   document.getElementById("heroSection").classList.remove("hidden");
+  toggle("all");
 };
 const showSearchNotMatch = () => {
   document.getElementById("removeAlert").classList.remove("hidden");
   document.getElementById("heroSection").classList.add("hidden");
 };
-
+// this is for when no data found and clicked in view all issues
 const removedClosed = () => {
   document.getElementById("removeAlert").classList.add("hidden");
   document.getElementById("heroSection").classList.remove("hidden");
+  toggle("all");
+  loadAllIssues();
 };
