@@ -146,20 +146,6 @@ const renderAllIssues = (data) => {
   });
   cardContainer.innerHTML = html;
 };
-// load open data
-const loadDataForAllOpenClosed = async () => {
-  try {
-    const response = await fetch(
-      "https://phi-lab-server.vercel.app/api/v1/lab/issues",
-    );
-    const data = await response.json();
-    showOpenData(data);
-    showClosedData(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-loadDataForAllOpenClosed();
 
 // 3 buttons dom
 let allButton = document.getElementById("allButton");
@@ -169,63 +155,58 @@ let closedButton = document.getElementById("closedButton");
 // show all issue
 allButton.addEventListener("click", () => {
   removedClosed();
-  showLoading();
   toggle("all");
   loadAllIssues();
 });
 //show open data
-const showOpenData = (dataForOpen) => {
-  openButton.addEventListener("click", () => {
-    removedClosed();
-    showLoading();
-    toggle("open");
-    let openArray = [];
-    // checking the data of open
-    let issueData = Array.isArray(dataForOpen.data) ? dataForOpen.data : [];
-    issueData.forEach((element) => {
-      if (element.status === "open") {
-        openArray.push(element);
-      }
-    });
-    renderAllIssues(openArray);
-    OffLoading();
+
+openButton.addEventListener("click", () => {
+  removedClosed();
+  showLoading();
+  toggle("open");
+  let openArray = [];
+  // checking the data of open
+  allIssues.forEach((element) => {
+    if (element.status === "open") {
+      openArray.push(element);
+    }
   });
-};
+  renderAllIssues(openArray);
+  OffLoading();
+});
+
 //show closed data
-const showClosedData = (dataForClosed) => {
-  closedButton.addEventListener("click", () => {
-    removedClosed();
-    showLoading();
-    toggle("closed");
-    let closedArray = [];
-    let issueData = Array.isArray(dataForClosed.data) ? dataForClosed.data : [];
-    issueData.forEach((element) => {
-      if (element.status === "closed") {
-        closedArray.push(element);
-      }
-    });
-    renderAllIssues(closedArray);
-    OffLoading();
+closedButton.addEventListener("click", () => {
+  removedClosed();
+  toggle("closed");
+  let closedArray = [];
+  allIssues.forEach((element) => {
+    if (element.status === "closed") {
+      closedArray.push(element);
+    }
   });
-};
+  renderAllIssues(closedArray);
+  OffLoading();
+});
+
 // toggle
 const toggle = (pass) => {
   if (pass === "all") {
-    openButton.classList.remove("btn", "btn-primary");
-    closedButton.classList.remove("btn", "btn-primary");
+    openButton.classList.remove("btn-primary");
+    closedButton.classList.remove("btn-primary");
     allButton.classList.add("btn", "btn-primary");
   } else if (pass === "open") {
-    allButton.classList.remove("btn", "btn-primary");
-    closedButton.classList.remove("btn", "btn-primary");
+    allButton.classList.remove("btn-primary");
+    closedButton.classList.remove("btn-primary");
     openButton.classList.add("btn", "btn-primary");
   } else if (pass === "closed") {
-    openButton.classList.remove("btn", "btn-primary");
-    allButton.classList.remove("btn", "btn-primary");
+    openButton.classList.remove("btn-primary");
+    allButton.classList.remove("btn-primary");
     closedButton.classList.add("btn", "btn-primary");
   } else if (pass === "search") {
-    openButton.classList.remove("btn", "btn-primary");
-    allButton.classList.remove("btn", "btn-primary");
-    closedButton.classList.remove("btn", "btn-primary");
+    openButton.classList.remove("btn-primary");
+    allButton.classList.remove("btn-primary");
+    closedButton.classList.remove("btn-primary");
   }
 };
 // popUp modal when clicked in card
@@ -307,7 +288,7 @@ const modalCardNo = async (id) => {
   let html = `
           <div class="">
           <h2 class="font-bold text-[24px] mb-2">${modalData.title}</h2>
-          <div class="mb-6 flex flex-row justify-start items-center gap-7 mb-5">
+          <div class="flex flex-row justify-start items-center gap-7 mb-5">
             <div
               class="py-0.5 px-3 font-medium text-[14px] ${status} rounded-3xl text-white flex justify-center items-center"
             >
