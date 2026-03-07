@@ -1,3 +1,17 @@
+const openAndClosed = (id) => {
+  if (id === "open") {
+    document.getElementById("closedStatus").classList.add("hidden");
+    document.getElementById("openStatus").classList.remove("hidden");
+  }
+  if (id === "closed") {
+    document.getElementById("openStatus").classList.add("hidden");
+    document.getElementById("closedStatus").classList.remove("hidden");
+  }
+  if (id === "all") {
+    document.getElementById("openStatus").classList.remove("hidden");
+    document.getElementById("closedStatus").classList.remove("hidden");
+  }
+};
 // snipper
 const hideSpinnerOnly = () => {
   document.getElementById("snipper").classList.add("hidden");
@@ -71,10 +85,10 @@ const renderAllIssues = (data) => {
       }
       category += `
           <div
-              class="${style} gap-1 px-2 py-0.5 flex flex-row justify-center items-center  lg:text-[14px] font-medium text-[12px] rounded-3xl space-x-1 cursor-pointer">
+              class="${style} gap-1 px-2 py-0.5 flex flex-row justify-center items-center  lg:text-[11px] font-medium text-[12px] rounded-3xl space-x-1 cursor-pointer">
               ${icon ? `<img class="w-3" src="assets/${icon}" alt="" />` : ""}
 
-              ${elementItem}
+              ${elementItem.toUpperCase()}
           </div>
         `;
     });
@@ -101,14 +115,13 @@ const renderAllIssues = (data) => {
     // checking the status to show the proper icon
     const openOrClosed =
       element.status === "open" ? "Open-Status.png" : "closed.png";
-    console.log(`card id: ${element.id} title: ${element.title}`);
 
     html += `
         <div title="Click to preview" onclick="modalCardNo('${element.id}')"
     class="card w-full shadow-md rounded-md ${borderColor} cursor-pointer h-full overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md relative"
     >
     <div id="snipperForCard${element.id}" class="absolute inset-0 flex justify-center items-center bg-black/10 hidden pointer-events-none">
-    <span class="loading loading-ring loading-xl"></span>
+    <span class="loading loading-spinner text-primary"></span>
     </div>
     <div class="p-4 h-full flex flex-col">
         <div class="flex flex-row justify-between items-center mb-3">
@@ -120,9 +133,9 @@ const renderAllIssues = (data) => {
             />
         </div>
         <div
-            class=" ${priority} py-0.5 px-3 flex flex-row justify-center items-center font-medium lg:text-[14px] text-[12px] rounded-3xl space-x-1 cursor-pointer"
+            class=" ${priority} py-0.5 px-3 flex flex-row justify-center items-center font-medium lg:text-[11px] text-[12px] rounded-3xl space-x-1 cursor-pointer"
         >
-            ${element.priority}
+            ${element.priority.toUpperCase()}
         </div>
         </div>
         <h2 class="font-semibold text-[14px] mb-2">
@@ -153,7 +166,9 @@ let openButton = document.getElementById("openButton");
 let closedButton = document.getElementById("closedButton");
 
 // show all issue
+openAndClosed("all");
 allButton.addEventListener("click", () => {
+  openAndClosed("all");
   removedClosed();
   toggle("all");
   loadAllIssues();
@@ -161,6 +176,7 @@ allButton.addEventListener("click", () => {
 //show open data
 
 openButton.addEventListener("click", () => {
+  openAndClosed("open");
   removedClosed();
   showLoading();
   toggle("open");
@@ -171,12 +187,14 @@ openButton.addEventListener("click", () => {
       openArray.push(element);
     }
   });
+
   renderAllIssues(openArray);
   OffLoading();
 });
 
 //show closed data
 closedButton.addEventListener("click", () => {
+  openAndClosed("closed");
   removedClosed();
   toggle("closed");
   let closedArray = [];
@@ -270,7 +288,7 @@ const modalCardNo = async (id) => {
         class="${style} gap-1 px-2 py-0.5 flex flex-row justify-center items-center  lg:text-[14px] font-medium text-[12px] rounded-3xl space-x-1 cursor-pointer">
         ${icon ? `<img class="w-3" src="assets/${icon}" alt="" />` : ""}
 
-        ${element}
+        ${element.toUpperCase()}
     </div>
 `;
   });
@@ -292,7 +310,7 @@ const modalCardNo = async (id) => {
             <div
               class="py-0.5 px-3 font-medium text-[14px] ${status} rounded-3xl text-white flex justify-center items-center"
             >
-              ${modalData.status}
+              ${modalData.status.toUpperCase()}
             </div>
             <div class="flex flex-row justify-start items-center space-x-7">
               <li>${modalData.author}</li>
@@ -319,7 +337,7 @@ const modalCardNo = async (id) => {
               <button
                 class="py-1 px-3 font-medium text-[12px] rounded-3xl ${priority} flex justify-center items-center"
               >
-                ${modalData.priority}
+                ${modalData.priority.toUpperCase()}
               </button>
             </div>
           </div>
@@ -334,7 +352,7 @@ const searchIssue = () => {
   const searchButton = document.getElementById("searchButton");
   searchButton.addEventListener("click", () => {
     const searchInput = document.getElementById("search");
-    let search = searchInput.value.trim();
+    let search = searchInput.value.trim().toUpperCase();
     if (search) {
       loadSearchData(search);
     } else {
