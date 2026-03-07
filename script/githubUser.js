@@ -183,7 +183,6 @@ allButton.addEventListener("click", () => {
 
 openButton.addEventListener("click", () => {
   openAndClosed("open");
-  removedClosed();
   showLoading();
   toggle("open");
   let openArray = [];
@@ -193,7 +192,6 @@ openButton.addEventListener("click", () => {
       openArray.push(element);
     }
   });
-
   renderAllIssues(openArray);
   OffLoading();
 });
@@ -201,7 +199,6 @@ openButton.addEventListener("click", () => {
 //show closed data
 closedButton.addEventListener("click", () => {
   openAndClosed("closed");
-  removedClosed();
   toggle("closed");
   let closedArray = [];
   allIssues.forEach((element) => {
