@@ -15,7 +15,6 @@ const loadAllIssues = async () => {
   const data = await response.json();
   //   this function for render all data in website
   renderAllIssues(data.data);
-  OffLoading();
 };
 loadAllIssues();
 
@@ -115,8 +114,8 @@ const renderAllIssues = (data) => {
     </div>
     <hr class="text-gray-300 w-full" />
     <div class="text-[#64748B] text-[12px] p-4 ">
-        <p class="mb-2">#1 by ${element.author}</p>
-        <p>${element.updatedAt}</p>
+        <p class="mb-2">by ${element.author}</p>
+        <p>${element.createdAt}</p>
     </div>
     </div>
 
@@ -143,10 +142,9 @@ let closedButton = document.getElementById("closedButton");
 
 // show all issue
 allButton.addEventListener("click", () => {
-  showLoading;
+  showLoading();
   toggle("all");
   loadAllIssues();
-  OffLoading();
 });
 //show open data
 const showOpenData = (dataForOpen) => {
@@ -209,7 +207,6 @@ const modalCardNo = async (id) => {
   snipperForCard.classList.remove("hidden");
   const modelContainer = document.getElementById("modelContainer");
   document.getElementById("renderModal").showModal();
-  const card = document.getElementById(`modalCardNo${id}`);
   //   get data for single issue
   const response = await fetch(
     `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`,
@@ -306,7 +303,6 @@ const modalCardNo = async (id) => {
 // get issue by search
 const searchIssue = () => {
   const searchButton = document.getElementById("searchButton");
-  let searchKew = "fix navigation";
   searchButton.addEventListener("click", () => {
     const searchInput = document.getElementById("search");
     let search = searchInput.value;
@@ -323,6 +319,7 @@ const searchIssue = () => {
 searchIssue();
 
 const loadSearchData = async (searchWord) => {
+  showLoading();
   const response = await fetch(
     `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchWord}`,
   );
