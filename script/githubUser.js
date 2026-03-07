@@ -31,7 +31,7 @@ const renderAllIssues = (data) => {
   data.forEach((element) => {
     // checking the labels
     const label = element.labels;
-    let renderLabel = "";
+    let category = "";
     label.forEach((element) => {
       let icon = "";
       let style = "";
@@ -52,7 +52,7 @@ const renderAllIssues = (data) => {
         icon = "";
         style = "border-2 border-[#BFDBFE] bg-[#EFF6FF] text-[#2563EB]";
       }
-      renderLabel += `
+      category += `
           <div
               class="${style} gap-1 px-2 py-0.5 flex flex-row justify-center items-center  lg:text-[14px] font-medium text-[12px] rounded-3xl space-x-1 cursor-pointer">
               ${icon ? `<img class="w-3" src="assets/${icon}" alt="" />` : ""}
@@ -61,6 +61,9 @@ const renderAllIssues = (data) => {
           </div>
         `;
     });
+
+    // removed the extra text except date
+    const createdAt = element.createdAt.split("T")[0];
 
     // checking element status if open it will give border top in card
     const borderColor =
@@ -109,13 +112,13 @@ const renderAllIssues = (data) => {
         ${element.description}
         </p>
         <div class="gap-2 flex justify-start-start items-center mt-auto flex-wrap">
-        ${renderLabel}
+        ${category}
         </div>
     </div>
     <hr class="text-gray-300 w-full" />
     <div class="text-[#64748B] text-[12px] p-4 ">
         <p class="mb-2">by ${element.author}</p>
-        <p>${element.createdAt}</p>
+        <p>${createdAt}</p>
     </div>
     </div>
 
@@ -161,7 +164,6 @@ const showOpenData = (dataForOpen) => {
     renderAllIssues(openArray);
     document.getElementById("totalIssue").innerText =
       `${openArray.length} Issues`;
-    OffLoading();
   });
 };
 //show closed data
@@ -178,7 +180,6 @@ const showClosedData = (dataForClosed) => {
     renderAllIssues(closedArray);
     document.getElementById("totalIssue").innerText =
       `${closedArray.length} Issues`;
-    OffLoading();
   });
 };
 // toggle
@@ -215,8 +216,8 @@ const modalCardNo = async (id) => {
   const modalData = data.data;
   snipperForCard.classList.add("hidden");
   const createdAt = modalData.createdAt.split("T")[0];
-  //   looping the labels
-  let labels = "";
+  //   looping the category
+  let category = "";
   modalData.labels.forEach((element) => {
     let icon = "";
     let style = "";
@@ -237,7 +238,7 @@ const modalCardNo = async (id) => {
       icon = "";
       style = "border-2 border-[#BFDBFE] bg-[#EFF6FF] text-[#2563EB]";
     }
-    labels += `
+    category += `
     <div
         class="${style} gap-1 px-2 py-0.5 flex flex-row justify-center items-center  lg:text-[14px] font-medium text-[12px] rounded-3xl space-x-1 cursor-pointer">
         ${icon ? `<img class="w-3" src="assets/${icon}" alt="" />` : ""}
@@ -273,7 +274,7 @@ const modalCardNo = async (id) => {
           </div>
           <!-- bug and help wanted section -->
           <div class="gap-2 flex justify-start items-center mb-6">
-            ${labels}
+            ${category}
           </div>
           <p class="mb-6">
             ${modalData.description}
