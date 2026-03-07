@@ -412,5 +412,6 @@ const removedClosed = () => {
   document.getElementById("removeAlert").classList.add("hidden");
   document.getElementById("heroSection").classList.remove("hidden");
   toggle("all");
+  openAndClosed("all");
   loadAllIssues();
 };
