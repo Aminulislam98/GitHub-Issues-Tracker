@@ -65,6 +65,7 @@
             </div>
           </div>
         </div>
+        <!-- no data found -->
       </header>
 
       <!-- 3 button section -->
@@ -77,9 +78,43 @@
           <button id="closedButton" class="btn px-12">Closed</button>
         </div>
       </section>
+
       <!-- snipper -->
       <div id="snipper" class="flex justify-center items-center hidden">
         <span class="loading loading-dots loading-xl"></span>
+      </div>
+      <!-- no data found -->
+      <div
+        id="removeAlert"
+        role="alert"
+        class="alert alert-vertical mx-auto hidden"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          class="stroke-info h-6 w-6 shrink-0"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        <span class="font-bold text-red-600"
+          >No issues matched your search query.</span
+        >
+        <div>
+          <button onclick="closed()" class="btn btn-sm">Closed</button>
+          <button
+            onclick="removedClosed()"
+            id="viewAllIssueButton"
+            class="btn btn-sm btn-primary"
+          >
+            View All Issues
+          </button>
+        </div>
       </div>
       <!-- hero -->
       <section id="heroSection" class="container mx-auto shadow hidden">
@@ -189,6 +224,7 @@
         </div>
       </dialog>
     </main>
+
     <script src="script/githubUser.js"></script>
   </body>
 </html>
