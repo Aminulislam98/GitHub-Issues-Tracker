@@ -34,7 +34,7 @@
       rel="stylesheet"
     />
   </head>
-  <body class="md:bg-[#F8FAFC]">
+  <body class="bg-[#FBFBFB] h-full">
     <!-- main section -->
     <main id="mainSection" class="mx-auto bg-[#F8FAFC]">
       <!-- header -->
@@ -54,16 +54,14 @@
                 class="fa-solid fa-magnifying-glass absolute left-2 top-3 z-10"
               ></i>
               <input
+                id="search"
                 type="text"
                 placeholder="Search Issue"
                 class="input input-bordered w-24 md:w-auto pl-8"
               />
             </div>
             <div class="dropdown dropdown-end flex justify-center items-center">
-              <button class="btn btn-primary">
-                <i class="fa-solid fa-plus"></i>
-                New Issue
-              </button>
+              <button id="searchButton" class="btn btn-primary">Search</button>
             </div>
           </div>
         </div>
@@ -79,8 +77,12 @@
           <button id="closedButton" class="btn px-12">Closed</button>
         </div>
       </section>
+      <!-- snipper -->
+      <div id="snipper" class="flex justify-center items-center hidden">
+        <span class="loading loading-dots loading-xl"></span>
+      </div>
       <!-- hero -->
-      <section class="container mx-auto shadow">
+      <section id="heroSection" class="container mx-auto shadow hidden">
         <!-- 50 Issues -->
         <div
           class="flex flex-row justify-between items-center p-6 shadow rounded-t-md bg-white border-b border-b-gray-200"
@@ -111,6 +113,7 @@
             </div>
           </div>
         </div>
+
         <!-- card container -->
         <div
           id="cardContainer"
@@ -180,7 +183,7 @@
           <div class="modal-action">
             <form method="dialog">
               <!-- if there is a button in form, it will close the modal -->
-              <button class="btn">Close</button>
+              <button class="btn btn-primary">Close</button>
             </form>
           </div>
         </div>

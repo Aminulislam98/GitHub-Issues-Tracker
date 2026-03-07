@@ -1,11 +1,21 @@
+// snipper
+const showLoading = () => {
+  document.getElementById("heroSection").classList.add("hidden");
+  document.getElementById("snipper").classList.remove("hidden");
+};
+const OffLoading = () => {
+  document.getElementById("snipper").classList.add("hidden");
+  document.getElementById("heroSection").classList.remove("hidden");
+};
 const loadAllIssues = async () => {
+  showLoading();
   const response = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
   const data = await response.json();
   //   this function for render all data in website
   renderAllIssues(data.data);
-  console.log(data.data);
+  OffLoading();
 };
 loadAllIssues();
 
@@ -56,8 +66,8 @@ const renderAllIssues = (data) => {
     // checking element status if open it will give border top in card
     const borderColor =
       element.status === "open"
-        ? "border-t-3 border-t-green-500 "
-        : "border-t-3 border-t-purple-500";
+        ? "border-t-4 border-t-green-500"
+        : "border-t-4 border-t-purple-500";
     // checking the priority to apply different color
     let priority = "";
     if (element.priority === "high") {
@@ -72,9 +82,12 @@ const renderAllIssues = (data) => {
       element.status === "open" ? "Open-Status.png" : "closed.png";
 
     html += `
-        <div onclick="modalCardNo(${element.id})"
-    class="card w-full shadow-md rounded-md ${borderColor} cursor-pointer h-full"
+        <div title="Click to preview" onclick="modalCardNo(${element.id})"
+    class="card w-full shadow-md rounded-md ${borderColor} cursor-pointer h-full overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md relative"
     >
+    <div id="snipperForCard${element.id}" class="absolute inset-0 flex justify-center items-center bg-black/10 hidden">
+    <span class="loading loading-ring loading-xl"></span>
+    </div>
     <div class="p-4 h-full flex flex-col">
         <div class="flex flex-row justify-between items-center mb-3">
         <div>
@@ -96,7 +109,7 @@ const renderAllIssues = (data) => {
         <p class="text-[12px] text-[#64748B] mb-3 line-clamp-2">
         ${element.description}
         </p>
-        <div class="gap-2 flex flex-start items-center mt-auto flex-wrap">
+        <div class="gap-2 flex justify-start-start items-center mt-auto flex-wrap">
         ${renderLabel}
         </div>
     </div>
@@ -110,6 +123,7 @@ const renderAllIssues = (data) => {
     `;
   });
   cardContainer.innerHTML = html;
+  OffLoading();
 };
 // load open data
 const loadDataForAllOpenClosed = async () => {
@@ -129,12 +143,15 @@ let closedButton = document.getElementById("closedButton");
 
 // show all issue
 allButton.addEventListener("click", () => {
+  showLoading;
   toggle("all");
   loadAllIssues();
+  OffLoading();
 });
 //show open data
 const showOpenData = (dataForOpen) => {
   openButton.addEventListener("click", () => {
+    showLoading();
     toggle("open");
     let openArray = [];
     // checking the data of open
@@ -146,11 +163,13 @@ const showOpenData = (dataForOpen) => {
     renderAllIssues(openArray);
     document.getElementById("totalIssue").innerText =
       `${openArray.length} Issues`;
+    OffLoading();
   });
 };
 //show closed data
 const showClosedData = (dataForClosed) => {
   closedButton.addEventListener("click", () => {
+    showLoading();
     toggle("closed");
     let closedArray = [];
     dataForClosed.data.forEach((element) => {
@@ -161,6 +180,7 @@ const showClosedData = (dataForClosed) => {
     renderAllIssues(closedArray);
     document.getElementById("totalIssue").innerText =
       `${closedArray.length} Issues`;
+    OffLoading();
   });
 };
 // toggle
@@ -177,20 +197,26 @@ const toggle = (pass) => {
     openButton.classList.remove("btn", "btn-primary");
     allButton.classList.remove("btn", "btn-primary");
     closedButton.classList.add("btn", "btn-primary");
+  } else if (pass === "search") {
+    openButton.classList.remove("btn", "btn-primary");
+    allButton.classList.remove("btn", "btn-primary");
+    closedButton.classList.remove("btn", "btn-primary");
   }
 };
 // popUp modal when clicked in card
 const modalCardNo = async (id) => {
+  const snipperForCard = document.getElementById(`snipperForCard${id}`);
+  snipperForCard.classList.remove("hidden");
   const modelContainer = document.getElementById("modelContainer");
   document.getElementById("renderModal").showModal();
   const card = document.getElementById(`modalCardNo${id}`);
-
   //   get data for single issue
   const response = await fetch(
     `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`,
   );
   const data = await response.json();
   const modalData = data.data;
+  snipperForCard.classList.add("hidden");
   const createdAt = modalData.createdAt.split("T")[0];
   //   looping the labels
   let labels = "";
@@ -256,9 +282,8 @@ const modalCardNo = async (id) => {
             ${modalData.description}
           </p>
           <div
-            class="bg-[#E4E4E7] p-6 flex flex-row justify-between items-center rounded-xl mt-2 w-full"
+            class="bg-[#F8FAFC] p-6 flex flex-row justify-between items-center rounded-xl mt-2 w-full"
           >
-            <!-- left section -->
             <div class="space-y-1">
               <p class="font-normal text-[16px] text-[#64748B]">Assignee:</p>
               <p class="font-semibold">${modalData.assignee ? modalData.assignee : "Not Assigned Yet"}</p>
@@ -275,5 +300,32 @@ const modalCardNo = async (id) => {
           </div>
         </div>
     `;
+
   modelContainer.innerHTML = html;
+};
+// get issue by search
+const searchIssue = () => {
+  const searchButton = document.getElementById("searchButton");
+  let searchKew = "fix navigation";
+  searchButton.addEventListener("click", () => {
+    const searchInput = document.getElementById("search");
+    let search = searchInput.value;
+    if (search) {
+      loadSearchData(search);
+      toggle("search");
+    } else {
+      toggle("all");
+      loadAllIssues();
+      return;
+    }
+  });
+};
+searchIssue();
+
+const loadSearchData = async (searchWord) => {
+  const response = await fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchWord}`,
+  );
+  const data = await response.json();
+  renderAllIssues(data.data);
 };
